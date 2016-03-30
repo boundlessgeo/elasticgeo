@@ -17,7 +17,8 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.HeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.geoserver.catalog.Catalog;
@@ -116,6 +117,7 @@ public class ElasticConfigurationPanel extends ResourceConfigurationPanel {
 
         @Override
         public void renderHead(IHeaderResponse response) {
+            
             response.renderOnLoadJavascript(getCallbackScript().toString());
         }
     }
@@ -131,7 +133,8 @@ public class ElasticConfigurationPanel extends ResourceConfigurationPanel {
         
         @Override
         protected void doSave() {
-            _layerInfo = getLayerInfo();
+            
+            _layerInfo = this.getPublishedInfo();
             GeoServerApplication app = (GeoServerApplication) getApplication();
             Catalog catalog = app.getCatalog();
             
@@ -194,7 +197,7 @@ public class ElasticConfigurationPanel extends ResourceConfigurationPanel {
                     typeInfo.getMetadata().put(ElasticLayerConfiguration.KEY, _layerConfig);
                 }
                 
-                this.updateLayer(layerInfo);
+                this.updatePublishedInfo(layerInfo);// .updateLayer(layerInfo);
                 this.updateResource(typeInfo);
                 
                 Field isNewfield = ResourceConfigurationPage.class.getDeclaredField("isNew");

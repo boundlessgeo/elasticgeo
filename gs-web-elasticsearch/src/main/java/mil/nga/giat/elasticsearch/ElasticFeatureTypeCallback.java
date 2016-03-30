@@ -71,4 +71,6 @@ public class ElasticFeatureTypeCallback implements FeatureTypeCallback {
         // nothing to do
     }
 
+
+
 }

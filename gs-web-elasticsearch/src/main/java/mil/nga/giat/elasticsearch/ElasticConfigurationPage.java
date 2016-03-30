@@ -117,7 +117,7 @@ public abstract class ElasticConfigurationPage extends Panel {
                 for (final ElasticAttribute attribute : attProvider.getItems()) {
                     attribute.setUse(use);
                 }
-                target.addComponent(elasticAttributePanel);
+                target.add(elasticAttributePanel);
             }
         };
         useAllCheckBox.setOutputMarkupId(true);
@@ -138,7 +138,7 @@ public abstract class ElasticConfigurationPage extends Panel {
                 for (final ElasticAttribute attribute : attProvider.getItems()) {
                     attribute.setUseShortName(useShortName);
                 }
-                target.addComponent(elasticAttributePanel);
+                target.add(elasticAttributePanel);
             }
         };
         checkBox.setOutputMarkupId(true);
@@ -225,8 +225,8 @@ public abstract class ElasticConfigurationPage extends Panel {
             ElasticDataStore dataStore = (ElasticDataStore) ((DataStoreInfo) ri.getStore())
                     .getDataStore(new NullProgressListener());
 
-            ArrayList<ElasticAttribute> result = new ArrayList<ElasticAttribute>();
-            Map<String, ElasticAttribute> tempMap = new HashMap<String, ElasticAttribute>();
+            ArrayList<ElasticAttribute> result = new ArrayList<>();
+            Map<String, ElasticAttribute> tempMap = new HashMap<>();
             final List<ElasticAttribute> attributes;
             if (layerConfig.getAttributes() != null) {
                 attributes = layerConfig.getAttributes();
@@ -281,7 +281,7 @@ public abstract class ElasticConfigurationPage extends Panel {
                 } else if (property == ElasticAttributeProvider.USE) {
                     CheckBox checkBox = new CheckBox("use", new PropertyModel<Boolean>(itemModel, "use"));
                     final String onclick = "document.getElementById(\"" + useAllMarkupId + "\").checked = false;";
-                    checkBox.add(new AttributeAppender("onclick", new Model<String>(onclick), ";"));
+                    checkBox.add(new AttributeAppender("onclick", new Model<>(onclick), ";"));
                     Fragment f = new Fragment(id, "checkboxUse", ElasticConfigurationPage.this);
                     f.add(checkBox);
                     return f;
@@ -339,9 +339,9 @@ public abstract class ElasticConfigurationPage extends Panel {
             @Override
             protected void onPopulateItem(Property<ElasticAttribute> property, ListItem item) {
                 if (property == ElasticAttributeProvider.STORED) {
-                    item.add(new AttributeModifier("style",true,Model.of("text-align:center")));
+                    item.add(new AttributeModifier("style",true,IModel.of("text-align:center")));
                 } else if (property == ElasticAttributeProvider.ANALYZED) {
-                    item.add(new AttributeModifier("style",true,Model.of("text-align:center")));
+                    item.add(new AttributeModifier("style",true,IModel.of("text-align:center")));
                 }
             }
         };
@@ -358,12 +358,19 @@ public abstract class ElasticConfigurationPage extends Panel {
      */
     private static class GeometryTypeRenderer implements IChoiceRenderer {
 
+        @Override
         public Object getDisplayValue(Object object) {
             return ((Class) object).getSimpleName();
         }
 
+        @Override
         public String getIdValue(Object object, int index) {
             return (String) getDisplayValue(object);
+        }
+
+        @Override
+        public Object getObject(String string, IModel imodel) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
     }

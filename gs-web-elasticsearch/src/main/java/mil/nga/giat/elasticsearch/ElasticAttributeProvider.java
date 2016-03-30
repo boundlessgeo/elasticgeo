@@ -7,6 +7,7 @@ package mil.nga.giat.elasticsearch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import mil.nga.giat.data.elasticsearch.ElasticAttribute;
@@ -22,12 +23,12 @@ public class ElasticAttributeProvider extends GeoServerDataProvider<ElasticAttri
 
     private static final long serialVersionUID = -1021780286733349153L;
 
-    private List<ElasticAttribute> attributes = new ArrayList<ElasticAttribute>();
+    private List<ElasticAttribute> attributes = new ArrayList<>();
     
     /**
      * Name of field
      */
-    protected static final Property<ElasticAttribute> NAME = new BeanProperty<ElasticAttribute>("name",
+    protected static final Property<ElasticAttribute> NAME = new BeanProperty<>("name",
             "displayName");
 
     /**
@@ -51,37 +52,37 @@ public class ElasticAttributeProvider extends GeoServerDataProvider<ElasticAttri
     /**
      * Mark as the default geometry
      */
-    protected static final Property<ElasticAttribute> DEFAULT_GEOMETRY = new BeanProperty<ElasticAttribute>(
+    protected static final Property<ElasticAttribute> DEFAULT_GEOMETRY = new BeanProperty<>(
             "defaultGeometry", "defaultGeometry");
 
     /**
      * SRID of geometric field
      */
-    protected static final Property<ElasticAttribute> SRID = new BeanProperty<ElasticAttribute>("srid",
+    protected static final Property<ElasticAttribute> SRID = new BeanProperty<>("srid",
             "srid");
 
     /**
      * Use field in datastore
      */
-    protected static final Property<ElasticAttribute> USE = new BeanProperty<ElasticAttribute>("use",
+    protected static final Property<ElasticAttribute> USE = new BeanProperty<>("use",
             "use");
 
     /**
      * Store if the field is in use in datastore
      */
-    protected static final Property<ElasticAttribute> DATE_FORMAT = new BeanProperty<ElasticAttribute>("dateFormat",
+    protected static final Property<ElasticAttribute> DATE_FORMAT = new BeanProperty<>("dateFormat",
             "dateFormat");
 
     /**
      * If field is analyzed
      */
-    protected static final Property<ElasticAttribute> ANALYZED = new BeanProperty<ElasticAttribute>("analyzed",
+    protected static final Property<ElasticAttribute> ANALYZED = new BeanProperty<>("analyzed",
             "analyzed");
 
     /**
      * If field is stored
      */
-    protected static final Property<ElasticAttribute> STORED = new BeanProperty<ElasticAttribute>("stored",
+    protected static final Property<ElasticAttribute> STORED = new BeanProperty<>("stored",
             "stored");
 
     /**
@@ -102,5 +103,16 @@ public class ElasticAttributeProvider extends GeoServerDataProvider<ElasticAttri
     protected List<ElasticAttribute> getItems() {
         return attributes;
     }
+
+    @Override
+    public Iterator iterator(long l, long l1) {
+        return attributes.iterator();
+    }
+
+    @Override
+    public long size() {
+        return attributes.size();
+    }
+   
 
 }
