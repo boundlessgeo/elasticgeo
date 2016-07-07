@@ -19,6 +19,7 @@ import mil.nga.giat.data.elasticsearch.ElasticLayerConfiguration;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
@@ -43,6 +44,7 @@ import org.geoserver.catalog.FeatureTypeInfo;
 import org.geoserver.catalog.LayerInfo;
 import org.geoserver.catalog.ResourceInfo;
 import org.geoserver.web.GeoServerApplication;
+import org.geoserver.web.data.resource.ResourceConfigurationPage;
 import org.geoserver.web.wicket.GeoServerDataProvider;
 import org.geoserver.web.wicket.GeoServerDataProvider.Property;
 import org.geoserver.web.wicket.GeoServerTablePanel;
@@ -160,7 +162,7 @@ public abstract class ElasticConfigurationPage extends Panel {
      * Do nothing
      */
     protected void onCancel(AjaxRequestTarget target) {
-        done(target, null, null);
+        done(target, null);
     }
 
     /**
@@ -187,20 +189,7 @@ public abstract class ElasticConfigurationPage extends Panel {
                 error(new ParamResourceModel("geomEmptyFailure", ElasticConfigurationPage.this)
                 .getString());
             }
-
-            Catalog catalog = ((GeoServerApplication) this.getPage().getApplication()).getCatalog();
-            FeatureTypeInfo typeInfo;
-            DataStoreInfo dsInfo = catalog.getStore(ri.getStore().getId(), DataStoreInfo.class);
-            ElasticDataStore ds = (ElasticDataStore) dsInfo.getDataStore(null);
-            CatalogBuilder builder = new CatalogBuilder(catalog);
-            builder.setStore(dsInfo);
-            typeInfo = builder.buildFeatureType(ds.getFeatureSource(ri.getQualifiedName()));
-            typeInfo.setName(ri.getName());
-            typeInfo.getMetadata().put(ElasticLayerConfiguration.KEY, layerConfig);
-            LayerInfo layerInfo = builder.buildLayer(typeInfo);
-            layerInfo.setName(ri.getName());
-
-            done(target, layerInfo, layerConfig);
+            done(target, layerConfig);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             error(new ParamResourceModel("creationFailure", this, e).getString());
@@ -383,14 +372,12 @@ public abstract class ElasticConfigurationPage extends Panel {
      * This method is called after modal executes its operation
      * 
      * @param target ajax response target
-     * @param layerInfo GeoServer layer configuration
      * @param layerConfig Elasticsearch layer configuration
      * 
      * @see {@link #onSave}
      * @see {@link #onCancel}
      * 
      */
-    abstract void done(AjaxRequestTarget target, LayerInfo layerInfo, 
-            ElasticLayerConfiguration layerConfig);
+    abstract void done(AjaxRequestTarget target, ElasticLayerConfiguration layerConfig);
 
 }
